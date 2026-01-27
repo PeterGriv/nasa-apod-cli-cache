@@ -1,41 +1,15 @@
-import requests, json
-import os 
+import requests
 from dotenv import load_dotenv
+
+from api import get_apod_data
+from storage import save_image, save_meta
+
 load_dotenv()
-
-# GET DATA from API 
-def get_data():
-    NASA_API_KEY = os.getenv("NASA_API_KEY")
-    if not NASA_API_KEY:
-        raise RuntimeError("API KEY not set!")
-    source = requests.get("https://api.nasa.gov/planetary/apod", params={"api_key" : NASA_API_KEY}, timeout=10)
-    source.raise_for_status()
-    data = source.json()
-    return data
-
-# CREATE .IMG 
-def save_image(data):
-    title = data["title"]
-    place_img = f"/Users/Fidel/Desktop/{title}.jpg"
-    img_url = data["hdurl"]
-    img_data = requests.get(img_url, timeout=10).content
-    with open(place_img, "wb") as f:
-        f.write(img_data)
-
-
-# CREATE .TXT
-def save_meta(data):
-    title = data["title"]
-    place_txt = f"/Users/Fidel/Desktop/{title}.txt"
-    with open(place_txt, "w") as f:
-        json.dump(data, f, indent=2)
-
-
 
 # MAIN WRAPPER
 def main():
     try: 
-        data = get_data()
+        data = get_apod_data()
         save_image(data)
         save_meta(data)
     except requests.RequestException as e:
