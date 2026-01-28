@@ -1,3 +1,4 @@
+import sys
 import requests
 from dotenv import load_dotenv
 
@@ -8,10 +9,20 @@ load_dotenv()
 
 # MAIN WRAPPER
 def main():
+    date = None
+
+    if len(sys.argv) > 1:
+        date = sys.argv[1]
+    
+    if date == "today":
+        date = None
+
+
     try: 
-        data = get_apod_data()
+        data = get_apod_data(date=date)
         save_image(data)
         save_meta(data)
+        print("Request succesful!")
     except requests.RequestException as e:
         print(f"Network error: {e}")
     except KeyError as e: 
