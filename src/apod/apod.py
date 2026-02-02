@@ -13,16 +13,20 @@ def main():
 
     if len(sys.argv) > 1:
         date = sys.argv[1]
-    
     if date == "today":
         date = None
 
+    print("Welcome to the NASA APOD API CLI tool. Now I`ll try to connect to the API...")
 
     try: 
         data = get_apod_data(date=date)
+        print("Request succesful!")
+        if date != None:
+            print(f"Now I am trying to fetch data for image and metadata from {date}...")
+        else:
+            print(f"Now I am trying to fetch data for image and metadata from today...")
         save_image(data)
         save_meta(data)
-        print("Request succesful!")
     except requests.RequestException as e:
         print(f"Network error: {e}")
     except KeyError as e: 

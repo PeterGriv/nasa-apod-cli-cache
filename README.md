@@ -2,7 +2,7 @@
 
 # NASA APOD CLI Tool
 
-Simple Python CLI tool for fetching data from NASA's **Astronomy Picture of the Day (APOD)** API and saving the image and metadata locally.
+Simple Python CLI tool for fetching data from NASA Astronomy Picture of the Day (APOD) API and saving the image and metadata locally.
 
 This project is intended as a small portfolio example demonstrating:
 - working with external APIs
@@ -10,8 +10,6 @@ This project is intended as a small portfolio example demonstrating:
 - basic error handling
 - modular project structure
 - simple CLI argument handling
-
----
 
 ## What it does
 
@@ -21,15 +19,11 @@ This project is intended as a small portfolio example demonstrating:
 - Saves metadata as a JSON file
 - Stores output files in a local project directory
 
----
-
 ## Requirements
 
 - Python 3.9+
 - NASA API key  
   Get one for free at: https://api.nasa.gov/
-
----
 
 ## Setup
 
@@ -74,3 +68,5 @@ src/apod/
 ├── apod.py      # CLI entry point
 ├── api.py       # API communication logic
 ├── storage.py   # File saving logic
+
+
