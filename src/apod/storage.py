@@ -5,7 +5,7 @@ import os
 OUTPUT_DIR = "output"
 os.makedirs(OUTPUT_DIR, exist_ok = True)
 
-# CREATE .IMG 
+# SAVE .IMG 
 def save_image(data):
     title = data["title"]
     place_img = f"{OUTPUT_DIR}/{title}.jpg"
@@ -15,9 +15,16 @@ def save_image(data):
         f.write(img_data)
 
 
-# CREATE .TXT
-def save_meta(data):
-    title = data["title"]
-    place_txt = f"{OUTPUT_DIR}/{title}.txt"
-    with open(place_txt, "w") as f:
-        json.dump(data, f, indent=2)
+# # SAVE METADATA
+# def save_meta(data):
+#     title = data["title"]
+#     place_txt = f"{OUTPUT_DIR}/{title}.txt"
+#     with open(place_txt, "w") as f:
+#         json.dump(data, f, indent=2)
+
+
+# CREATE MARKDOWN
+def save_markdown(markdown_text: str, title: str):
+    place_md = f"{OUTPUT_DIR}/{title}.md"
+    with open(place_md, "w", encoding="utf-8") as f:
+        f.write(markdown_text)

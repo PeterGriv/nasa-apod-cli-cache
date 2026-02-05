@@ -1,9 +1,10 @@
 import sys
 import requests
 from dotenv import load_dotenv
+from formatter import apod_to_markdown
 
 from api import get_apod_data
-from storage import save_image, save_meta
+from storage import save_image, save_meta, save_markdown
 
 load_dotenv()
 
@@ -26,7 +27,10 @@ def main():
         else:
             print(f"Now I am trying to fetch data for image and metadata from today...")
         save_image(data)
-        save_meta(data)
+        # save_meta(data)
+        
+        md = apod_to_markdown(data)
+        save_markdown(md, data["title"])
     except requests.RequestException as e:
         print(f"Network error: {e}")
     except KeyError as e: 
