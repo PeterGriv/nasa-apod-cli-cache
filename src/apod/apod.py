@@ -1,15 +1,14 @@
-from pathlib import Path
-import webbrowser
-from formatter import apod_to_markdown, apod_to_html
-from storage import save_image, save_markdown, save_html
-
 import sys
-import requests
-from dotenv import load_dotenv
-from formatter import apod_to_markdown
+import webbrowser
+from pathlib import Path
 
+from dotenv import load_dotenv
+import requests
 from api import get_apod_data
-from storage import save_image, save_markdown
+
+from storage import save_image, save_markdown, save_html
+from formatter import apod_to_markdown, apod_to_html
+
 
 load_dotenv()
 
@@ -27,7 +26,7 @@ def main():
     try: 
         data = get_apod_data(date=date)
         print("Request succesful!")
-        if date != None:
+        if date is not None:
             print(f"Now I am trying to fetch data for image and metadata from {date}...")
         else:
             print(f"Now I am trying to fetch data for image and metadata from today...")
