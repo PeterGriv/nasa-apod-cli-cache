@@ -1,10 +1,15 @@
+from pathlib import Path
+import webbrowser
+from formatter import apod_to_markdown, apod_to_html
+from storage import save_image, save_markdown, save_html
+
 import sys
 import requests
 from dotenv import load_dotenv
 from formatter import apod_to_markdown
 
 from api import get_apod_data
-from storage import save_image, save_meta, save_markdown
+from storage import save_image, save_markdown
 
 load_dotenv()
 
@@ -31,6 +36,9 @@ def main():
         
         md = apod_to_markdown(data)
         save_markdown(md, data["title"])
+        html = apod_to_html(data)
+        html_path = save_html(html, data["title"])
+        webbrowser.open(Path(html_path).resolve().as_uri())
     except requests.RequestException as e:
         print(f"Network error: {e}")
     except KeyError as e: 

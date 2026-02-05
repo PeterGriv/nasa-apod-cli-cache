@@ -28,3 +28,11 @@ def save_markdown(markdown_text: str, title: str):
     place_md = f"{OUTPUT_DIR}/{title}.md"
     with open(place_md, "w", encoding="utf-8") as f:
         f.write(markdown_text)
+
+
+# SAVE HTML 
+def save_html(html_text: str, title: str) -> str:
+    place_html = f"{OUTPUT_DIR}/{title}.html"
+    with open(place_html, "w", encoding="utf-8") as f:
+        f.write(html_text)
+    return place_html
