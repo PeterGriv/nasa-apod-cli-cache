@@ -1,65 +1,35 @@
 # formatter.py
+from html import escape
+
 import markdown
+
 
 def apod_to_markdown(data: dict) -> str:
     return f"""# NASA Astronomy Picture of the Day
-**Date:** {data['date']}
+**Date:** {data.get('date', '')}
 
 ---
 
 ## Title
-{data['title']}
+{data.get('title', '')}
 
 ---
 
 ## Explanation
-{data['explanation']}
+{data.get('explanation', '')}
 
 ---
 
 ## Image
-![APOD Image]({data['url']})
+![APOD Image]({data.get('url', '')})
 
 ---
 
 ## Metadata
-- **Media type:** {data['media_type']}
+- **Media type:** {data.get('media_type', '')}
 - **HD URL:** {data.get('hdurl', 'N/A')}
 """
 
-
-def apod_to_html(data: dict) -> str:
-    md = apod_to_markdown(data)
-
-    body = markdown.markdown(
-        md,
-        extensions=["fenced_code", "tables"]
-    )
-
-    title = data.get("title", "NASA APOD")
-
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title}</title>
-  <style>
-    body {{ font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial; margin: 40px; line-height: 1.6; max-width: 900px; }}
-    img {{ max-width: 100%; height: auto; display: block; margin: 16px 0; }}
-    code, pre {{ background: #f6f8fa; padding: 2px 4px; border-radius: 4px; }}
-    pre {{ padding: 12px; overflow-x: auto; }}
-    hr {{ margin: 24px 0; }}
-  </style>
-</head>
-<body>
-{body}
-</body>
-</html>"""
-
-
-import markdown
-from html import escape
 
 def apod_to_html(data: dict) -> str:
     md = apod_to_markdown(data)
@@ -71,9 +41,14 @@ def apod_to_html(data: dict) -> str:
     hdurl = data.get("hdurl")
     url = data.get("url")
 
-    # malé CTA linky (bezpečné fallbacky)
-    hd_link = f'<a class="btn" href="{escape(hdurl)}" target="_blank" rel="noopener">Open HD</a>' if hdurl else ""
-    src_link = f'<a class="btn btn-ghost" href="{escape(url)}" target="_blank" rel="noopener">Open Source</a>' if url else ""
+    hd_link = (
+        f'<a class="btn" href="{escape(hdurl)}" target="_blank" rel="noopener">Open HD</a>'
+        if hdurl else ""
+    )
+    src_link = (
+        f'<a class="btn btn-ghost" href="{escape(url)}" target="_blank" rel="noopener">Open Source</a>'
+        if url else ""
+    )
 
     return f"""<!doctype html>
 <html lang="en">
@@ -104,11 +79,7 @@ def apod_to_html(data: dict) -> str:
       line-height: 1.65;
     }}
 
-    .wrap {{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 36px 18px 64px;
-    }}
+    .wrap {{ max-width: 980px; margin: 0 auto; padding: 36px 18px 64px; }}
 
     header {{
       display: flex;
@@ -118,10 +89,7 @@ def apod_to_html(data: dict) -> str:
       margin-bottom: 18px;
     }}
 
-    .brand {{
-      display: grid;
-      gap: 6px;
-    }}
+    .brand {{ display: grid; gap: 6px; }}
 
     .kicker {{
       color: var(--muted);
@@ -130,11 +98,7 @@ def apod_to_html(data: dict) -> str:
       text-transform: uppercase;
     }}
 
-    h1 {{
-      margin: 0;
-      font-size: 28px;
-      line-height: 1.25;
-    }}
+    h1 {{ margin: 0; font-size: 28px; line-height: 1.25; }}
 
     .meta {{
       display: flex;
@@ -156,17 +120,12 @@ def apod_to_html(data: dict) -> str:
       border: 1px solid var(--line);
       background: var(--card);
       border-radius: 18px;
-      padding: 18px 18px;
+      padding: 18px;
       backdrop-filter: blur(10px);
       box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }}
 
-    .actions {{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 14px 0 0;
-    }}
+    .actions {{ display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }}
 
     .btn {{
       display: inline-flex;
@@ -181,34 +140,20 @@ def apod_to_html(data: dict) -> str:
       font-size: 14px;
     }}
 
-    .btn:hover {{
-      background: rgba(122,162,255,.22);
-    }}
+    .btn:hover {{ background: rgba(122,162,255,.22); }}
 
     .btn-ghost {{
       border-color: var(--line);
       background: rgba(255,255,255,.04);
     }}
 
-    /* štýlovanie markdown výstupu */
-    .content {{
-      margin-top: 18px;
-    }}
+    .content {{ margin-top: 18px; }}
 
-    .content h1, .content h2, .content h3 {{
-      margin: 18px 0 10px;
-      line-height: 1.25;
-    }}
+    .content h1, .content h2, .content h3 {{ margin: 18px 0 10px; line-height: 1.25; }}
 
-    .content h2 {{
-      font-size: 18px;
-      color: var(--text);
-    }}
+    .content h2 {{ font-size: 18px; }}
 
-    .content p {{
-      margin: 10px 0;
-      color: var(--text);
-    }}
+    .content p {{ margin: 10px 0; }}
 
     .content hr {{
       border: 0;
@@ -216,14 +161,8 @@ def apod_to_html(data: dict) -> str:
       margin: 18px 0;
     }}
 
-    .content a {{
-      color: var(--accent);
-      text-decoration: none;
-    }}
-
-    .content a:hover {{
-      text-decoration: underline;
-    }}
+    .content a {{ color: var(--accent); text-decoration: none; }}
+    .content a:hover {{ text-decoration: underline; }}
 
     .content img {{
       max-width: 100%;
@@ -242,21 +181,10 @@ def apod_to_html(data: dict) -> str:
       border-radius: 12px;
     }}
 
-    .content code {{
-      padding: 2px 6px;
-    }}
+    .content code {{ padding: 2px 6px; }}
+    .content pre {{ padding: 12px; overflow-x: auto; }}
 
-    .content pre {{
-      padding: 12px;
-      overflow-x: auto;
-    }}
-
-    footer {{
-      margin-top: 22px;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
-    }}
+    footer {{ margin-top: 22px; color: var(--muted); font-size: 12px; text-align: center; }}
   </style>
 </head>
 <body>
